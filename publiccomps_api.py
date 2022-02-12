@@ -13,7 +13,7 @@ def ticker_quarters(ticker):
     if r.status_code == 200:
         return r.json()
 
-def quarter_data():
-    r = requests.get(url_base + 'tickers/quarter_data', headers=headers)
+def quarter_ends():
+    r = requests.get(url_base + 'tickers/quarter_ends', headers=headers)
     if r.status_code == 200:
         return r.json()

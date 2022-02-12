@@ -8,11 +8,14 @@ def update_db_entry(ticker, metrics):
 def delete_db_entry(ticker):
     return
 
+def relevant_tickers():
+    return True
+
 def missing_metrics(ticker):
     key_metrics = ["revenue"]
     qoq_metrics = ["subscription_revenue", "customers", "employees", "net_dollar_retention", "annual_recurring_revenue"]
     missing_metrics = []
-    ticker_quarters = pcomps_api.ticker_quarters(ticker)
+    ticker_quarters = publiccomps_api.ticker_quarters(ticker)
     if ticker_quarters:
         current_quarter = ticker_quarters[-1]
         for metric in key_metrics:
@@ -27,7 +30,7 @@ def missing_metrics(ticker):
     return missing_metrics
 
 def error_report():
-    tickers = list(pcomps_api.quarter_data().keys())
+    tickers = publiccomps_api.quarter_ends().keys()
     for ticker in tickers:
         metrics = missing_metrics(ticker)
         if metrics:
