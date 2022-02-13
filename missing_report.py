@@ -1,15 +1,19 @@
 import publiccomps_api
+import db_connection
+import time
 
 CRAWL_DELAY = 0.3
 
-def update_db_entry(ticker, metrics):
-    return
+def relevant_tickers(quarter_ends, dbc):
+    quarter_count_dict = dbc.get_quarter_counts_dict()
+    missing_metrics_dict = dbc.get_missing_metrics_dict()
 
-def delete_db_entry(ticker):
-    return
-
-def relevant_tickers():
-    return True
+    rel_tickers = list(missing_metrics_dict.keys())
+    for ticker, quarters in quarter_ends.items():
+        if ticker in quarter_count_dict and len(quarters) == quarter_count_dict[ticker]:
+            continue
+        rel_tickers.append(ticker)
+    return rel_tickers
 
 def missing_metrics(ticker):
     key_metrics = ["revenue"]
@@ -30,16 +34,19 @@ def missing_metrics(ticker):
     return missing_metrics
 
 def error_report():
-    tickers = publiccomps_api.quarter_ends().keys()
+    quarter_ends = publiccomps_api.quarter_ends()
+    dbc = db_connection.DBConnection()
+    tickers = relevant_tickers(quarter_ends, dbc)
     for ticker in tickers:
         metrics = missing_metrics(ticker)
         if metrics:
-            update_db_entry(ticker, metrics)
+            dbc.update_missing_metrics(ticker, metrics)
         else:
-            delete_db_entry(ticker)
+            dbc.delete_missing_metrics(ticker)
+        dbc.update_quarter_counts(ticker, len(quarter_ends[ticker]))
         print(ticker + ": " + str(metrics))
-        sleep(CRAWL_DELAY)
-    return
+        time.sleep(CRAWL_DELAY)
+    dbc.close()
 
 if __name__ == "__main__":
     error_report()
