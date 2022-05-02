@@ -17,7 +17,7 @@ def relevant_tickers(quarter_ends, dbc):
 
 def missing_metrics(ticker):
     key_metrics = ["revenue"]
-    qoq_metrics = ["subscription_revenue", "customers", "employees", "net_dollar_retention", "annual_recurring_revenue"]
+    qoq_metrics = ["subscription_revenue", "customers", "employees", "net_dollar_retention", "annual_recurring_revenue", "outstanding_shares"]
     missing_metrics = []
     ticker_quarters = publiccomps_api.ticker_quarters(ticker)
     if ticker_quarters:
