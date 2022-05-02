@@ -24,7 +24,7 @@ def missing_metrics(ticker):
         current_quarter = ticker_quarters[-1]
         for metric in key_metrics:
             if not current_quarter[metric]:
-                missing_metrics.append[metric]
+                missing_metrics.append(metric)
     if ticker_quarters and len(ticker_quarters) > 1:
         current_quarter = ticker_quarters[-1]
         previous_quarter = ticker_quarters[-2]
