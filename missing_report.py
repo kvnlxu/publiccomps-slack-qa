@@ -46,8 +46,8 @@ def qoq_percent_metrics(ticker_quarters):
         previous_quarter = ticker_quarters[-2]
         for metric, error_limit in tolerance.items():
             if current_quarter[metric] and previous_quarter[metric]:
-                error_rate = abs((current_quarter[metric] - previous_quarter[metric]) / previous_quarter[metric])
-                if error_rate >= error_limit:
+                error_rate = (current_quarter[metric] - previous_quarter[metric]) / previous_quarter[metric]
+                if abs(error_rate) >= error_limit:
                     percent_metrics.append(metric + ": " + str(round(error_rate, 3)))
     return percent_metrics
 
@@ -65,8 +65,8 @@ def yoy_percent_metrics(ticker_quarters):
         previous_quarter = ticker_quarters[-5]
         for metric, error_limit in tolerance.items():
             if current_quarter[metric] and previous_quarter[metric]:
-                error_rate = abs((current_quarter[metric] - previous_quarter[metric]) / previous_quarter[metric])
-                if error_rate >= error_limit:
+                error_rate = (current_quarter[metric] - previous_quarter[metric]) / previous_quarter[metric]
+                if abs(error_rate) >= error_limit:
                     percent_metrics.append(metric + ": " + str(round(error_rate, 3)))
     return percent_metrics
 
