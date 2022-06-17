@@ -7,7 +7,7 @@ class DBConnection:
     def __init__(self, db_url=os.environ.get("PC_SLACK_DB_URL")):
         parsed_url =  urlparse(db_url)
         params = {
-            'database': 'd45naqprfovler',
+            'database': parsed_url.path[1:],
             'user': parsed_url.username,
             'password': parsed_url.password,
             'host': parsed_url.hostname,
