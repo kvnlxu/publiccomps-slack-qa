@@ -19,7 +19,8 @@ def relevant_tickers(quarter_ends, dbc):
 
 def missing_metrics(ticker_quarters):
     key_metrics = ["revenue"]
-    qoq_metrics = ["subscription_revenue", "customers", "employees", "net_dollar_retention", "annual_recurring_revenue", "outstanding_shares"]
+    qoq_metrics = ["subscription_revenue", "customers", "employees", "net_dollar_retention",
+        "annual_recurring_revenue", "outstanding_shares", "free_cash_flow", "gross_margin"]
     missing_metrics = []
     if ticker_quarters:
         current_quarter = ticker_quarters[-1]
@@ -38,7 +39,8 @@ def qoq_percent_metrics(ticker_quarters):
     tolerance = {
         "outstanding_shares": 0.1,
         "employees": 0.1,
-        "customers": 0.1
+        "customers": 0.1,
+        "free_cash_flow": 0.1
     }
     percent_metrics = []
     if ticker_quarters and len(ticker_quarters) > 1:
@@ -57,7 +59,8 @@ def yoy_percent_metrics(ticker_quarters):
         "cost_of_revenue": 0.75,
         "research_development": 0.75,
         "sales_marketing": 0.75,
-        "general_admin": 0.75
+        "general_admin": 0.75,
+        "free_cash_flow": 0.75
     }
     percent_metrics = []
     if ticker_quarters and len(ticker_quarters) > 4:
