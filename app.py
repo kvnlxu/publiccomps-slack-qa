@@ -17,15 +17,18 @@ def full_report(ack, say, command):
     qoq_percentages = dbc.get_qoq_percentages()
     yoy_percentages = dbc.get_yoy_percentages()
     dbc.close()
-    response_text = "Missing metrics for the latest quarter:\n\n"
-    for ticker, metrics in missing_metrics:
-        response_text += f"{ticker}: {metrics}\n"
-    response_text += "\n\n\n" + "Metrics with significant change over the last quarter:\n\n"
-    for ticker, metrics in qoq_percentages:
-        response_text += f"{ticker}: {metrics}\n"
-    response_text += "\n\n\n" + "Metrics with significant change over the last year:\n\n"
-    for ticker, metrics in yoy_percentages:
-        response_text += f"{ticker}: {metrics}\n"
+    if missing_metrics:
+        response_text += "Missing metrics for the latest quarter:\n\n"
+        for ticker, metrics in missing_metrics:
+            response_text += f"{ticker}: {metrics}\n"
+    if qoq_percentages:
+        response_text += "\n\n\n" + "Metrics with significant change over the last quarter:\n\n"
+        for ticker, metrics in qoq_percentages:
+            response_text += f"{ticker}: {metrics}\n"
+    if yoy_percentages:
+        response_text += "\n\n\n" + "Metrics with significant change over the last year:\n\n"
+        for ticker, metrics in yoy_percentages:
+            response_text += f"{ticker}: {metrics}\n"
     say(response_text)
 
 @app.command("/qa-missing")
