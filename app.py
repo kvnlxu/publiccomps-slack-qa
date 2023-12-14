@@ -17,6 +17,7 @@ def full_report(ack, say, command):
     qoq_percentages = dbc.get_qoq_percentages()
     yoy_percentages = dbc.get_yoy_percentages()
     dbc.close()
+    response_text = ""
     if missing_metrics:
         response_text += "Missing metrics for the latest quarter:\n\n"
         for ticker, metrics in missing_metrics:
