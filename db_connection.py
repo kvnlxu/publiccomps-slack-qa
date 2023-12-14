@@ -97,6 +97,36 @@ class DBConnection:
         results = self.cur.fetchall()
         return results
 
+    def get_recent_missing_metrics(self):
+        query = '''
+            SELECT ticker, metrics
+            FROM missing_metrics
+            WHERE created_at >= NOW() - '1 day'::INTERVAL
+        '''
+        self.cur.execute(query)
+        results = self.cur.fetchall()
+        return results
+
+    def get_recent_qoq_percentages(self):
+        query = '''
+            SELECT ticker, metrics
+            FROM qoq_percentages
+            WHERE created_at >= NOW() - '1 day'::INTERVAL
+        '''
+        self.cur.execute(query)
+        results = self.cur.fetchall()
+        return results
+
+    def get_recent_yoy_percentages(self):
+        query = '''
+            SELECT ticker, metrics
+            FROM yoy_percentages
+            WHERE created_at >= NOW() - '1 day'::INTERVAL
+        '''
+        self.cur.execute(query)
+        results = self.cur.fetchall()
+        return results
+
     def close(self):
         self.con.commit()
         self.con.close()

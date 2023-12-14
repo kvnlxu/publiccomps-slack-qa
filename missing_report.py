@@ -20,7 +20,8 @@ def relevant_tickers(quarter_ends, dbc):
 def missing_metrics(ticker_quarters):
     key_metrics = ["revenue"]
     qoq_metrics = ["subscription_revenue", "customers", "employees", "net_dollar_retention",
-        "annual_recurring_revenue", "outstanding_shares", "gross_margin"]
+        "annual_recurring_revenue", "outstanding_shares", "gross_margin", "remaining_performance_obligation",
+        "current_remaining_performance_obligation"]
     missing_metrics = []
     if ticker_quarters:
         current_quarter = ticker_quarters[-1]
@@ -47,18 +48,21 @@ def qoq_percent_metrics(ticker_quarters):
         previous_quarter = ticker_quarters[-2]
         for metric, error_limit in tolerance.items():
             if current_quarter[metric] and previous_quarter[metric]:
-                error_rate = (current_quarter[metric] - previous_quarter[metric]) / previous_quarter[metric]
+                error_rate = (current_quarter[metric] - previous_quarter[metric]) / min(previous_quarter[metric], current_quarter[metric])
+                percent_change = (current_quarter[metric] - previous_quarter[metric]) / previous_quarter[metric] * 100
                 if abs(error_rate) >= error_limit:
-                    percent_metrics.append(metric + ": " + str(round(error_rate, 3)))
+                    percent_metrics.append(metric + ": " + str(round(percent_change, 1)) + "%")
     return percent_metrics
 
 def yoy_percent_metrics(ticker_quarters):
     tolerance = {
-        "revenue": 0.75,
-        "cost_of_revenue": 0.75,
-        "research_development": 0.75,
-        "sales_marketing": 0.75,
-        "general_admin": 0.75,
+        "revenue": 0.5,
+        "annual_recurring_revenue": 0.5,
+        "cost_of_revenue": 0.5,
+        "research_development": 0.5,
+        "sales_marketing": 0.5,
+        "general_admin": 0.5,
+        "total_opex": 0.5
     }
     percent_metrics = []
     if ticker_quarters and len(ticker_quarters) > 4:
@@ -66,9 +70,10 @@ def yoy_percent_metrics(ticker_quarters):
         previous_quarter = ticker_quarters[-5]
         for metric, error_limit in tolerance.items():
             if current_quarter[metric] and previous_quarter[metric]:
-                error_rate = (current_quarter[metric] - previous_quarter[metric]) / previous_quarter[metric]
+                error_rate = (current_quarter[metric] - previous_quarter[metric]) / min(previous_quarter[metric], current_quarter[metric])
+                percent_change = (current_quarter[metric] - previous_quarter[metric]) / previous_quarter[metric] * 100
                 if abs(error_rate) >= error_limit:
-                    percent_metrics.append(metric + ": " + str(round(error_rate, 3)))
+                    percent_metrics.append(metric + ": " + str(round(percent_change, 1)) + "%")
     return percent_metrics
 
 def error_report():
